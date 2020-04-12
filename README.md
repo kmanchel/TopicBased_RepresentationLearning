@@ -30,7 +30,7 @@ python3 -m venv cs577_project_venv
 
 3. activate the virtual environment module
 ```bash
-source ie590_project/bin/activate
+source cs577_project/bin/activate
 ```
 
 4. when finish working on the venv
