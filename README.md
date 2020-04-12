@@ -1,7 +1,6 @@
 # CS577(NLP) Project
 Project Repository for NLP 
 
-Tensorflow version: v2.0.0
 
 # 0. Layout
 
