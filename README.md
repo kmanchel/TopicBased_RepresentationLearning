@@ -1,7 +1,5 @@
-# cs577_project
-Project Repository for NLP 
-
 # CS577(NLP) Project
+Project Repository for NLP 
 
 Tensorflow version: v2.0.0
 
