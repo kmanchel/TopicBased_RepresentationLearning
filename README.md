@@ -8,8 +8,8 @@ Project Repository for NLP
 .
 ├── README.md
 ├── data
-
-└── requirements.txt
+├── setup
+└── src
 
 ```
 
@@ -22,7 +22,7 @@ Project Repository for NLP
 pip install virtualenv
 ```
 
-2. install python virtual environment named 'ie590_project_venv'
+2. install python virtual environment named 'cs577_project_venv'
 ```bash
 python3 -m venv cs577_project_venv
 ```

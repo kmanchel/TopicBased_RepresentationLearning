@@ -1,0 +1,32 @@
+
+########################################################################
+#      Date:           Wed Apr 15 15:34:42 PDT 2020
+#    Job ID:           574659.v-qsvr-1.aidevcloud
+#      User:           u40332
+# Resources:           neednodes=1:batch:ppn=2,nodes=1:batch:ppn=2,walltime=24:00:00
+########################################################################
+
+Starting Preprocessing
+Output file format: ExtraClean_
+Source Files: ['/home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml', '/home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml']
+Truth Files: ['/home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml', '/home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml']
+Lower Case Flag: True
+Extra Clean Flag: True
+Starting with data file: /home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml
+Finished data file: /home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml
+Starting with data file: /home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml
+Finished data file: /home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml
+DOING THE EXTRA CLEAAAAN!
+removing stopwords
+lemmatizing
+Starting with truth file: /home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml
+Finished truth file: /home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml
+Starting with truth file: /home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml
+Finished truth file: /home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml
+34178.39704322815
+
+########################################################################
+# End of output for job 574659.v-qsvr-1.aidevcloud
+# Date: Thu Apr 16 01:04:36 PDT 2020
+########################################################################
+

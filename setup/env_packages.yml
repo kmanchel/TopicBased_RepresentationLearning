@@ -1,0 +1,6 @@
+name: nlp
+channels:
+  - intel
+  - defaults
+prefix: /home/u40332/.conda/envs/nlp
+

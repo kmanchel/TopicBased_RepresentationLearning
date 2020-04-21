@@ -93,7 +93,7 @@ def encode_texts(params, texts, tokenizer):
     return encoded_texts
 
 #TRAIN-VAL SPLIT
-def _train_validate_test_split(df, train_percent=.8, validate_percent=.2, seed=243):
+def _train_validate_split(df, train_percent=.8, validate_percent=.2, seed=243):
     """Helper function for build_train_test()"""
     np.random.seed(seed)
     perm = np.random.permutation(df.index)
@@ -111,7 +111,7 @@ def build_train_test(main_csv_path, dataset_subset_ratio, seed=243):
     df = pd.read_csv(main_csv_path)
     #Shrink dataset by the ratio provided
     df = df.sample(frac=dataset_subset_ratio, random_state=seed).reset_index(drop=True)
-    train, val = _train_validate_test_split(df, train_percent=.8, validate_percent=.2)
+    train, val = _train_validate_split(df, train_percent=.8, validate_percent=.2)
     train.to_csv("train.csv", index=False)
     print("Created train.csv in current directory")
     val.to_csv("val.csv", index=False)

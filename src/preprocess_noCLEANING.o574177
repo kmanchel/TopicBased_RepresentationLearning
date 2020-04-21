@@ -1,0 +1,26 @@
+
+########################################################################
+#      Date:           Tue Apr 14 17:49:20 PDT 2020
+#    Job ID:           574177.v-qsvr-1.aidevcloud
+#      User:           u40332
+# Resources:           neednodes=1:batch:ppn=2,nodes=1:batch:ppn=2,walltime=24:00:00
+########################################################################
+
+Starting Preprocessing
+Output file format: unclean_
+Source Files: ['/home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml', '/home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml']
+Truth Files: ['/home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml', '/home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml']
+Starting with data file: /home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml
+Finished data file: /home/u40332/NLP/data/bias/articles-training-bypublisher-20181122.xml
+Starting with data file: /home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml
+Finished data file: /home/u40332/NLP/data/bias/articles-training-byarticle-20181122.xml
+Starting with truth file: /home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml
+Finished truth file: /home/u40332/NLP/data/bias/ground-truth-training-byarticle-20181122.xml
+Starting with truth file: /home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml
+Finished truth file: /home/u40332/NLP/data/bias/ground-truth-training-bypublisher-20181122.xml
+
+########################################################################
+# End of output for job 574177.v-qsvr-1.aidevcloud
+# Date: Tue Apr 14 17:54:47 PDT 2020
+########################################################################
+
