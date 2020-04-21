@@ -1,16 +1,19 @@
 import sys
-sys.path.append('/home/u40332/NLP/src/utils')
+
+sys.path.append("/home/u40332/NLP/src/utils")
 from utils import Params
 
 import tensorflow as tf
-#print("Using tf version: ",tf.__version__)
+
+# print("Using tf version: ",tf.__version__)
 import pandas as pd
 import tensorflow_hub as hub
 import os
 import re
 import numpy as np
 from bert.tokenization import FullTokenizer
-#from official.nlp.bert.tokenization import FullTokenizer
+
+# from official.nlp.bert.tokenization import FullTokenizer
 from tqdm import tqdm
 from tensorflow.compat.v1.keras import backend as K
 
@@ -96,37 +99,56 @@ class BertLayer(tf.keras.layers.Layer):
 
             mul_mask = lambda x, m: x * tf.expand_dims(m, axis=-1)
             masked_reduce_mean = lambda x, m: tf.reduce_sum(mul_mask(x, m), axis=1) / (
-                    tf.reduce_sum(m, axis=1, keepdims=True) + 1e-10)
+                tf.reduce_sum(m, axis=1, keepdims=True) + 1e-10
+            )
             input_mask = tf.cast(input_mask, tf.float32)
             pooled = masked_reduce_mean(result, input_mask)
         else:
-            raise NameError(f"Undefined pooling type (must be either first or mean, but is {self.pooling}")
+            raise NameError(
+                f"Undefined pooling type (must be either first or mean, but is {self.pooling}"
+            )
 
         return pooled
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.output_size)
-    
-    
-def build_model(max_seq_length, num_classes, n_fine_tune_layers): 
+
+
+def build_model(max_seq_length, num_classes, n_fine_tune_layers):
     in_id = tf.keras.layers.Input(shape=(max_seq_length,), name="input_ids")
     in_mask = tf.keras.layers.Input(shape=(max_seq_length,), name="input_masks")
     in_segment = tf.keras.layers.Input(shape=(max_seq_length,), name="segment_ids")
     bert_inputs = [in_id, in_mask, in_segment]
-    #pdb.set_trace()
-    
-    bert_output = BertLayer(n_fine_tune_layers=n_fine_tune_layers, pooling="first")(bert_inputs)
+    # pdb.set_trace()
+
+    bert_output = BertLayer(n_fine_tune_layers=n_fine_tune_layers, pooling="first")(
+        bert_inputs
+    )
     dense = tf.keras.layers.Dense(256, activation=tf.nn.relu)(bert_output)
     pred = tf.keras.layers.Dense(num_classes, activation=tf.nn.relu)(dense)
-    
+
     model = tf.keras.models.Model(inputs=bert_inputs, outputs=pred)
-    if num_classes>2:
-        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.Accuracy(name='Accuracy'), tf.keras.metrics.Precision(name='Precision'), tf.keras.metrics.Recall(name='Recall'), tf.keras.metrics.AUC(name='AUC')])
+    if num_classes > 2:
+        model.compile(
+            loss="categorical_crossentropy",
+            optimizer="adam",
+            metrics=[
+                tf.keras.metrics.Accuracy(name="Accuracy"),
+                tf.keras.metrics.Precision(name="Precision"),
+                tf.keras.metrics.Recall(name="Recall"),
+                tf.keras.metrics.AUC(name="AUC"),
+            ],
+        )
     else:
-        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.Accuracy(name='Accuracy')])
+        model.compile(
+            loss="binary_crossentropy",
+            optimizer="adam",
+            metrics=[tf.keras.metrics.Accuracy(name="Accuracy")],
+        )
     model.summary()
-    
+
     return model
+
 
 def initialize_vars(sess):
     sess.run(tf.compat.v1.local_variables_initializer())

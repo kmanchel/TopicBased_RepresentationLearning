@@ -1,41 +1,43 @@
 import sys
-sys.path.append('/home/u40332/NLP/src/utils')
+
+sys.path.append("/home/u40332/NLP/src/utils")
 from utils import Params, _train_validate_split
 
 import tensorflow as tf
-#print("Using tf version: ",tf.__version__)
+
+# print("Using tf version: ",tf.__version__)
 import pandas as pd
 import tensorflow_hub as hub
 import os
 import re
 import numpy as np
 from bert.tokenization import FullTokenizer
-#from official.nlp.bert.tokenization import FullTokenizer
+
+# from official.nlp.bert.tokenization import FullTokenizer
 from tqdm import tqdm
 from tensorflow.compat.v1.keras import backend as K
 import pdb
 
 
 def read_dataset(data_path, train_ratio, seed):
-    
-    
+
     df = pd.read_csv(data_path)
-    df.bias = df.bias.apply(lambda x: int(x*2 + 2))
-    
-    train_df, test_df = _train_validate_split(df, train_percent=train_ratio, validate_percent=(1-train_ratio), seed=seed)
+    df.bias = df.bias.apply(lambda x: int(x * 2 + 2))
 
+    train_df, test_df = _train_validate_split(
+        df, train_percent=train_ratio, validate_percent=(1 - train_ratio), seed=seed
+    )
 
-    train_text = train_df['content'].tolist()
-    train_text = [' '.join(t.split()[0:max_seq_length]) for t in train_text]
+    train_text = train_df["content"].tolist()
+    train_text = [" ".join(t.split()[0:max_seq_length]) for t in train_text]
     train_text = np.array(train_text, dtype=object)[:, np.newaxis]
-    train_label = train_df['bias'].tolist()
+    train_label = train_df["bias"].tolist()
 
-    test_text = test_df['content'].tolist()
-    test_text = [' '.join(t.split()[0:max_seq_length]) for t in test_text]
+    test_text = test_df["content"].tolist()
+    test_text = [" ".join(t.split()[0:max_seq_length]) for t in test_text]
     test_text = np.array(test_text, dtype=object)[:, np.newaxis]
-    test_label = test_df['bias'].tolist()
-    
-    
+    test_label = test_df["bias"].tolist()
+
     return train_text, train_label, test_text, test_label
 
 
@@ -59,21 +61,16 @@ class InputExample(object):
         self.label = label
 
 
-
 def create_tokenizer_from_hub_module():
     """Get the vocab file and casing info from the Hub module."""
-    #tf.compat.v1.disable_eager_execution()
-    bert_module =  hub.Module("https://tfhub.dev/google/bert_uncased_L-12_H-768_A-12/1")
+    # tf.compat.v1.disable_eager_execution()
+    bert_module = hub.Module("https://tfhub.dev/google/bert_uncased_L-12_H-768_A-12/1")
     tokenization_info = bert_module(signature="tokenization_info", as_dict=True)
     vocab_file, do_lower_case = sess.run(
-        [
-            tokenization_info["vocab_file"],
-            tokenization_info["do_lower_case"],
-        ]
+        [tokenization_info["vocab_file"], tokenization_info["do_lower_case"],]
     )
 
     return FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
-
 
 
 def convert_single_example(tokenizer, example, max_seq_length=256):
@@ -118,6 +115,7 @@ def convert_single_example(tokenizer, example, max_seq_length=256):
 
     return input_ids, input_mask, segment_ids, example.label
 
+
 def convert_examples_to_features(tokenizer, examples, max_seq_length=256):
     """Convert a set of `InputExample`s to a list of `InputFeatures`."""
 
@@ -136,6 +134,7 @@ def convert_examples_to_features(tokenizer, examples, max_seq_length=256):
         np.array(segment_ids),
         np.array(labels).reshape(-1, 1),
     )
+
 
 def convert_text_to_examples(texts, labels):
     """Create InputExamples"""
