@@ -1,7 +1,7 @@
 import sys
 
 sys.path.append("/home/u40332/NLP/src/utils")
-from utils import Params
+from utils.utils import Params
 
 import tensorflow as tf
 
@@ -109,6 +109,18 @@ class BertLayer(tf.keras.layers.Layer):
             )
 
         return pooled
+    
+    def get_config(self):
+
+        config = super().get_config().copy()
+        config.update({
+            'n_fine_tune_layers': self.n_fine_tune_layers,
+            'trainable': self.trainable,
+            'output_size': self.output_size,
+            'pooling': self.pooling,
+            'bert_path': self.bert_path,
+        })
+        return config
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.output_size)
@@ -133,7 +145,7 @@ def build_model(max_seq_length, num_classes, n_fine_tune_layers):
             loss="categorical_crossentropy",
             optimizer="adam",
             metrics=[
-                tf.keras.metrics.Accuracy(name="Accuracy"),
+                tf.keras.metrics.CategoricalAccuracy(name="Accuracy"),
                 tf.keras.metrics.Precision(name="Precision"),
                 tf.keras.metrics.Recall(name="Recall"),
                 tf.keras.metrics.AUC(name="AUC"),

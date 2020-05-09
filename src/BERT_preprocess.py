@@ -1,7 +1,7 @@
 import sys
 
 sys.path.append("/home/u40332/NLP/src/utils")
-from utils import Params, _train_validate_split
+from utils.utils import Params, _train_validate_split
 
 import tensorflow as tf
 
@@ -19,11 +19,18 @@ from tensorflow.compat.v1.keras import backend as K
 import pdb
 
 
-def read_dataset(data_path, train_ratio, seed):
+def read_dataset(data_path, train_ratio, seed, max_seq_length, n_samples,lab = 'bias'):
 
     df = pd.read_csv(data_path)
-    df.bias = df.bias.apply(lambda x: int(x * 2 + 2))
-
+    df = df[df['content'].str.contains('..........', regex=False)==False]
+    if lab == 'bias':
+        df = df[df.bias.isin([-1, 0, 1])]
+        df.bias = df.bias+1
+        df.bias = df.bias.astype('int')
+        df = df.reset_index(drop=True)
+    df = df.sample(n=n_samples, random_state=seed)
+    df = df.reset_index(drop=True)
+    print(df.head())
     train_df, test_df = _train_validate_split(
         df, train_percent=train_ratio, validate_percent=(1 - train_ratio), seed=seed
     )
@@ -31,14 +38,25 @@ def read_dataset(data_path, train_ratio, seed):
     train_text = train_df["content"].tolist()
     train_text = [" ".join(t.split()[0:max_seq_length]) for t in train_text]
     train_text = np.array(train_text, dtype=object)[:, np.newaxis]
-    train_label = train_df["bias"].tolist()
+    train_label = train_df[lab].tolist()
 
     test_text = test_df["content"].tolist()
     test_text = [" ".join(t.split()[0:max_seq_length]) for t in test_text]
     test_text = np.array(test_text, dtype=object)[:, np.newaxis]
-    test_label = test_df["bias"].tolist()
+    test_label = test_df[lab].tolist()
 
     return train_text, train_label, test_text, test_label
+
+
+class PaddingInputExample(object):
+    """Fake example so the num input examples is a multiple of the batch size.
+  When running eval/predict on the TPU, we need to pad the number of examples
+  to be a multiple of the batch size, because the TPU requires a fixed batch
+  size. The alternative is to drop the last batch, which is bad because it means
+  the entire output data won't be generated.
+  We use this class instead of `None` because treating `None` as padding
+  battches could cause silent errors.
+  """
 
 
 class InputExample(object):
@@ -61,7 +79,7 @@ class InputExample(object):
         self.label = label
 
 
-def create_tokenizer_from_hub_module():
+def create_tokenizer_from_hub_module(sess):
     """Get the vocab file and casing info from the Hub module."""
     # tf.compat.v1.disable_eager_execution()
     bert_module = hub.Module("https://tfhub.dev/google/bert_uncased_L-12_H-768_A-12/1")
