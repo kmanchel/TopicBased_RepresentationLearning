@@ -2,6 +2,12 @@
 
 Please see [project report](https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf) to get a full walkthrough of our project. <br>
 
+<object data="https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf">Project Report</a>.</p>
+    </embed>
+</object>
+
 Below are instructions on how to reproduce our findings: <br>
 
 ## Dataset corpus experiments without fine-tuning
