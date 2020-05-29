@@ -1,11 +1,11 @@
 # Topic Dependent Representation Learning
 
-Please see ![project report](https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf) to get a full walkthrough of our project. <br>
+Please see [project report](https://github.com/kmanchel/cs577_project/blob/master/Topic_Dependent_Representation_Learning.pdf) to get a full walkthrough of our project. <br>
 
 Below are instructions on how to reproduce our findings: <br>
 
 ## Dataset corpus experiments without fine-tuning
-### refer to ![W2V_without_Fine_Tuning](https://github.com/kmanchel/cs577_project/blob/master/W2V_withoout_Fine_Tuning/)
+### refer to [W2V_without_Fine_Tuning](https://github.com/kmanchel/cs577_project/blob/master/W2V_withoout_Fine_Tuning/)
 ---------------------------------------------------------------------------------------------
 Arguments (all optional):
   --dataset DATASET     Dataset for task, 1 for irony, 2 for nepal disaster, 3 for bias (1 as default)
@@ -17,7 +17,7 @@ Datasets used: bias_only_3k.csv (first 3000 entries of the Bias dataset), irony.
 Note: make sure folders 'irony_tmp', 'nepal_tmp', 'partisan_tmp' are in the same directory as the script and are empty before each experiment.
 
 ## Dataset corpus experiments with and without fine-tuning: 
-### refer to ![W2V_with_Fine_Tuning](https://github.com/kmanchel/cs577_project/blob/master/W2V_with_Fine_Tuning/)
+### refer to [W2V_with_Fine_Tuning](https://github.com/kmanchel/cs577_project/blob/master/W2V_with_Fine_Tuning/)
 ----------------------------------------------------------------------------------
 Files:
 - train_lda.py
@@ -68,14 +68,14 @@ For each dataset, we used the following tuned hyperparameters:
   + Number of topics: 10, Word2Vec mincount: 1, default Word2Vec options otherwise
 
 ## BERT Topic Based Finetuning:
-### refer to ![BERT](https://github.com/kmanchel/cs577_project/blob/master/BERT/)
+### refer to [BERT](https://github.com/kmanchel/cs577_project/blob/master/BERT/)
 ----------------
 Running these experiments will require a GPU/TPU. 
-The full implementation, results, and discussions are recorded in "TopicBased_BERT_Finetuning.ipynb" such that results are visible without having to run the code. Alternatively, "TopicBased_BERT_Finetuning.py" runs the experiments if a GPU is present (~4 hours to run).
+The full implementation, results, and discussions are recorded in [TopicBased_BERT_Finetuning](https://github.com/kmanchel/cs577_project/blob/master/BERT/TopicBased_BERT_Finetuning.ipynb) such that results are visible without having to run the code. The notebook also includes a full walkthrough of the BERT implementation using the hugging face transformers library. Alternatively, "TopicBased_BERT_Finetuning.py" runs the experiments if a GPU is present (~4 hours to run).
 Finetuning is run for all 4 datasets. Links for dataset also provided in notebook but they will need to be manually downloaded due to size limit:
 - Nepal Dataset: https://drive.google.com/open?id=1uYgcnTEZ5YEAdB6rLdWhHa7YuYJh9Wz3 
 - Queensland Dataset: https://drive.google.com/open?id=1IbqkpjHk_lzqUgnPxAjPifTbECmZ3p1P
 - Irony Dataset: https://drive.google.com/file/d/1yCULJV5EDc_EoHcNTxP8ovZ903KxJtYV/view?usp=sharing 
 - Hyperpartisan Bias Dataset: https://drive.google.com/open?id=1k4cSuS1Ww2U92CnEckVIh_QqF3JUkIsO 
 
-**Note that the Hyperpartisan Bias Dataset has been already preprocessed from a much larger xml file. For original preprocessing scripts, please visit: https://github.com/kmanchel/cs577_project/tree/master/src 
+**Note that the Hyperpartisan Bias Dataset has been already preprocessed from a much larger xml file. For original preprocessing scripts, please visit: https://github.com/kmanchel/cs577_project/tree/master/archive 
