@@ -1,77 +1,72 @@
-# CS577(NLP) Project
-Project Repository for NLP 
+Dataset corpus experiments without fine-tuning: see W2V_without_Fine_Tuning/dataset_corpus.py
+---------------------------------------------------------------------------------------------
+Arguments (all optional):
+  --dataset DATASET     Dataset for task, 1 for irony, 2 for nepal disaster, 3 for bias (1 as default)
+  --topic TOPIC         Topic modeling option, 1 for lda, 2 for nmf (1 as default)
+  --numtopics NUMTOPICS Number of topics (5 as default)
+  --mincount MINCOUNT   Min_count for w2v (5 as default)
+  --worddim WORDDIM     Word embedding dimension (300 as default)
+Datasets used: bias_only_3k.csv (first 3000 entries of the Bias dataset), irony.csv (Irony Dataset), preprocessed_nepal.csv (Nepal Dataset). Make sure they are in the same directory as the script.
+Note: make sure folders 'irony_tmp', 'nepal_tmp', 'partisan_tmp' are in the same directory as the script and are empty before each experiment.
 
+Dataset corpus experiments with and without fine-tuning: see W2V_with_Fine_Tuning/
+----------------------------------------------------------------------------------
+Files:
+- train_lda.py
+  + Trains LDA topic model
+- process_wiki.py
+  + Splits dataset by topics
+- train_word2vec.py
+  + Trains Word2Vec model on entire dataset (topic-independent)
+  + Trains Word2Vec model on each topic (with fine-tuning on the topic-independent Word2Vec model)
+  + Trains Word2Vec model on each topic (from scratch/without fine-tuning)
+- embed_all.py
+  + Processes dataset by embedding the documents using the topic-independent Word2Vec model
+- embed_topics.py
+  + Processes dataset by embedding the documents using topic-dependent Word2Vec models (with fine-tuning)
+  + Processes dataset by embedding the documents using topic-dependent Word2Vec models (without fine-tuning)
+- lr.py
+  + Trains logistic regression classifier with (1) topic-independent embeddings, (2) fine-tuned topic-dependent embeddings,
+    and (3) topic-dependent embeddings trained from scratch
+  + Reports test accuracy and F1 score for each embedding type
 
-# 0. Layout
+IMPORTANT: 
+All data files can be found at (due to large size): https://github.com/ArtfulBottom/NLP-Project/tree/master/src/data
 
-```bash
-.
-├── README.md
-├── data
-├── setup
-└── src
+The data files are:
+- irony.csv
+  + Preprocessed irony classification dataset
+- preprocessed_nepal.csv
+  + Preprocessed Nepal disaster classification dataset
+- preprocessed_queensland.csv
+  + Preprocessed Queensland disaster classification dataset
+- bias_only_3k.csv
+  + Preprocessed Partisan bias classification dataset
+- datacorpus_embed_all*
+  + Corresponds to the topic-independent embedding features obtained on each dataset
+- datacorpus_embed_topics_opt1*
+  + Corresponds to the topic-dependent embedding features (with fine-tuning) obtained on each dataset
+- datacorpus_embed_topics_opt2*
+  + Corresponds to the topic-dependent embedding features (without fine-tuning) obtained on each dataset
 
-```
+For each dataset, we used the following tuned hyperparameters:
+- irony.csv
+  + Number of topics: 20, Word2Vec mincount: 1, default Word2Vec options otherwise
+- preprocessed_nepal.csv
+  + Number of topics: 5, Word2Vec mincount: 1, default Word2Vec options otherwise
+- preprocessed_queensland.csv
+  + Number of topics: 5, Word2Vec mincount: 1, topic-dependent fine-tuning epochs: 20, default Word2Vec options otherwise
+- bias_only_3k.csv
+  + Number of topics: 10, Word2Vec mincount: 1, default Word2Vec options otherwise
 
-# 1. Setup
+BERT Topic Based Finetuning:
+----------------
+Running these experiments will require a GPU/TPU. 
+The full implementation, results, and discussions are recorded in "TopicBased_BERT_Finetuning.ipynb" such that results are visible without having to run the code. Alternatively, "TopicBased_BERT_Finetuning.py" runs the experiments if a GPU is present (~4 hours to run).
+Finetuning is run for all 4 datasets. Links for dataset also provided in notebook but they will need to be manually downloaded due to size limit:
+- Nepal Dataset: https://drive.google.com/open?id=1uYgcnTEZ5YEAdB6rLdWhHa7YuYJh9Wz3 
+- Queensland Dataset: https://drive.google.com/open?id=1IbqkpjHk_lzqUgnPxAjPifTbECmZ3p1P
+- Irony Dataset: https://drive.google.com/file/d/1yCULJV5EDc_EoHcNTxP8ovZ903KxJtYV/view?usp=sharing 
+- Hyperpartisan Bias Dataset: https://drive.google.com/open?id=1k4cSuS1Ww2U92CnEckVIh_QqF3JUkIsO 
 
-## 1.1 Build a virtual environment
-
-1. install virtual 
-```bash
-pip install virtualenv
-```
-
-2. install python virtual environment named 'cs577_project_venv'
-```bash
-python3 -m venv cs577_project_venv
-```
-
-3. activate the virtual environment module
-```bash
-source cs577_project/bin/activate
-```
-
-4. when finish working on the venv
-```bash
-deactivate
-```
-
-
-# 2. When making a pull request to Github
-
-```diff
-- Note: Use a branch named by your github account. Do not push to the master branch.
-```
-
-1. setup git on the working directory (you only do it once)
-```bash
-cd posture_venv # your virtual venv directory
-mkdir posture 
-cd posture # make sure you are in the directory which will be your working directory
-
-git init
-git remote add origin https://github.com/kmanchel/cs577_project.git
-git pull origin master
-```
-
-2. create a branch (you only do it once)
-```bash
-git branch <your_github_account_name>
-git checkout <your_github_account_name>
-```
-
-3. update codes
-
-4. push your update to your branch in github
-
-```bash
-git add <updated_file_names>
-git commit -m "<message>"
-git push origin <your_github_account_name>
-```
-
-5. make a pull request in the Github repository website
-
-
-
+**Note that the Hyperpartisan Bias Dataset has been already preprocessed from a much larger xml file. For original preprocessing scripts, please visit: https://github.com/kmanchel/cs577_project/tree/master/src 

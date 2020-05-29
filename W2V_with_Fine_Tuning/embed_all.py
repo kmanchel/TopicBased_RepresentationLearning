@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import sys
 from operator import itemgetter
+import os
 
 program = os.path.basename(sys.argv[0])
 logger = logging.getLogger(program)
@@ -13,14 +14,12 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
 logging.root.setLevel(level=logging.INFO)
 logger.info('running %s' % ' '.join(sys.argv))
 
-df = pd.read_csv('trainA.csv')
+df = pd.read_csv('data/bias_only_3k.csv')
 
 np.random.seed(43)
 w2v_embeddings = np.zeros((len(df), 300))
 w2v_rand = np.random.uniform(-0.8, 0.8, 300)
-
-# Compute word2vec embeddings.
-w2v_model = gensim.models.KeyedVectors.load('datacorpus_word2vec_all.model')
+w2v_model = gensim.models.KeyedVectors.load('data/datacorpus_word2vec_all.model')
 
 # Find all tweets with topic i.
 for i in range(len(df)):  
@@ -28,9 +27,9 @@ for i in range(len(df)):
     average_w2v_embeddings = np.zeros((1, 300))
 
     text = df.loc[i, 'text'].split()
-    for word in text:
+    for k, word in enumerate(text):
         if word in w2v_model:
-            average_w2v_embeddings[0] += w2v_model[word]
+            average_w2v_embeddings += w2v_model[word]
         else:
             average_w2v_embeddings += w2v_rand
     
@@ -38,4 +37,4 @@ for i in range(len(df)):
     w2v_embeddings[i] = average_w2v_embeddings
 
 df['embeddings'] = w2v_embeddings.tolist()
-df.to_csv('datacorpus_embed_all.csv', index=False)
+df.to_csv('data/datacorpus_embed_all_bias.csv', index=False)

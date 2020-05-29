@@ -18,18 +18,18 @@ import warnings
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 warnings.filterwarnings("ignore",category=FutureWarning)
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
-from tagger import *
+
 # parse arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=int, default=2, help='Dataset for task, 1 for irony, 2 for disaster')
+parser.add_argument('--dataset', type=int, default=1, help='Dataset for task, 1 for irony, 2 for nepal disaster, 3 for bias')
 parser.add_argument('--topic', type=int, default=1, help='Topic modeling option, 1 for lda, 2 for nmf')
-parser.add_argument('--numtopics', type=int, default=4, help='Number of topics')
+parser.add_argument('--numtopics', type=int, default=5, help='Number of topics')
 parser.add_argument('--mincount', type=int, default=5, help='Min_count for w2v')
 parser.add_argument('--worddim', type=int, default=300, help='Word embedding dimension')
 args = parser.parse_args()
 
 # initialize variables
-file_name = 'irony_dataset.csv'
+file_name = 'irony.csv'
 if args.dataset == 2:
     file_name = 'preprocessed_nepal.csv'
 if args.dataset == 3:
@@ -49,8 +49,6 @@ df_text = df['text']
 
 texts = []
 for sentence in df_text:
-    #sentence = nouns_adj(sentence)
-    #sentence = nouns(sentence)
     words = sentence.split(' ')
     texts.append(words)
 
@@ -65,9 +63,9 @@ corpus = [id2word.doc2bow(text) for text in texts]
 
 # topic model
 print('--- training topic model ---')
-topic_model = gensim.models.ldamodel.LdaModel(corpus=corpus, id2word=id2word, num_topics=num_topics, random_state=100, passes=50)
+topic_model = gensim.models.ldamodel.LdaModel(corpus=corpus, id2word=id2word, num_topics=num_topics, random_state=100, passes=1)
 if (args.topic == 2):
-    topic_model = nmf.Nmf(corpus=corpus, id2word=id2word, num_topics=num_topics, random_state=100, passes=10)
+    topic_model = nmf.Nmf(corpus=corpus, id2word=id2word, num_topics=num_topics, random_state=100, passes=1)
 topic_model.save('./{}_tmp/topic_model'.format(substr))
 
 topic_model = gensim.models.LdaModel.load('./{}_tmp/topic_model'.format(substr))
