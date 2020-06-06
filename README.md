@@ -5,7 +5,7 @@ Please see [project report](https://github.com/kmanchel/cs577_project/blob/maste
 Below are instructions on how to reproduce our findings: <br>
 
 ## Dataset corpus experiments without fine-tuning
-### refer to [W2V_without_Fine_Tuning](https://github.com/kmanchel/cs577_project/tree/master/W2V_withoout_Fine_Tuning)
+### refer to [W2V_without_Fine_Tuning](https://github.com/kmanchel/cs577_project/tree/master/W2V_without_Fine_Tuning)
 ---------------------------------------------------------------------------------------------
 Arguments (all optional):
   --dataset DATASET     Dataset for task, 1 for irony, 2 for nepal disaster, 3 for bias (1 as default)
